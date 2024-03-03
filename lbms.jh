@@ -1,0 +1,95 @@
+
+application {
+  config {
+    baseName libraryBook
+    applicationType monolith
+    packageName com.librarybook
+    authenticationType jwt
+    prodDatabaseType mysql
+    clientFramework react
+  }
+  entities *
+}
+
+enum Gender { M, F }
+
+entity Transaction {
+	transactionID Long required
+    startDate Date required
+    endDate Date
+}
+
+entity PhysicalBook {
+	physicalBookID Long required
+    bookISBN String
+    author String
+    title String required
+    category String required
+    isBorrowed Boolean required
+}
+
+entity AudioBook {
+	audioBookID Long required
+    bookISBN String
+    author String
+    title String required
+    category String required
+    isBorrowed Boolean required
+}
+
+entity Book {
+	bookID Long required
+}
+
+entity Reservation {
+	reservationID Long required
+    expirationDate Date required    
+}
+
+entity Librarian {
+	librarianID Long required
+    name String required
+    gender Gender required
+    dob	Date required
+    phoneNum String required unique
+    email String required unique
+}
+
+entity Customer {
+	customerID Long required
+	name String required
+    gender Gender required
+    dob Date required
+    phoneNum String required unique
+    email String required unique
+}
+
+entity User {
+	userID Long required
+}
+
+entity Payment {
+	paymentID Long required unique
+    isPaid Boolean required
+    amount Double required
+    transactinID Long required
+    customerID Long required
+    
+}
+
+
+relationship OneToMany {
+  Transaction to Book
+  Customer to Transaction
+  Customer to Reservation
+  Reservation to Book
+  Librarian to Book
+}
+
+relationship OneToOne {
+	User to Customer
+    User to Librarian
+    Book to PhysicalBook
+    Book to AudioBook
+    Transaction to Payment
+}
